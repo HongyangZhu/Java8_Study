@@ -28,7 +28,9 @@ Lambda是一个匿名函数，可以把Lambda表达式理解为是一段可以�
 
 ## 3.Lambda表达式的使用：6种场合
 
-语法格式一：无参，无返回值
+### 3.1.语法格式一：
+
+无参，无返回值
 
 ```java
 Runnable r1 = new Runnable() {
@@ -43,7 +45,9 @@ Runnable r2 = () -> System.out.println("This is lambda");
 r2.run();
 ```
 
-语法格式二：有参，无返回值
+### 3.2.语法格式二：
+
+有参，无返回值
 
 ```JAVA
 Consumer<String> con = new Consumer<String>() {
@@ -58,7 +62,9 @@ Consumer<String> con02 = (String s) -> System.out.println(s);
 con02.accept("Test");
 ```
 
-语法格式三：数据类型可以省略，因为可以由编译器推断得出，称为“类型推断”
+### 3.3.语法格式三：
+
+数据类型可以省略，因为可以由编译器推断得出，称为“**类型推断**”
 
 ```java
         System.out.println("语法格式三：数据类型可以省略，因为可以由编译器推断得出，称为“类型推断”");
@@ -67,7 +73,9 @@ con02.accept("Test");
         con02.accept("Test");
 ```
 
-语法格式四：Lambda 若只需要一个参数时，参数的小括号可以省略
+### 3.4.语法格式四：
+
+Lambda 若**只需要一个**参数时，参数的小括号可以省略
 
 ```java
         System.out.println("语法格式四：Lambda 若只需要一个参数时，参数的小括号可以省略");
@@ -76,7 +84,9 @@ con02.accept("Test");
         con02.accept("Test");
 ```
 
-语法格式五：Lambda 需要两个或者两个以上的参数，多条执行语句，并且有返回值时
+### 3.5.语法格式五：
+
+Lambda 需要**两个或者两个以上**的参数，多条执行语句，并且有返回值时
 
 ```java
 Comparator<Integer> com1 = new Comparator<Integer>() {
@@ -97,7 +107,9 @@ Comparator<Integer> com2 = (o1, o2) -> {
 System.out.println(com2.compare(12, 21));
 ```
 
-语法格式六：当Lambda体只有一条语句时，return与大括号都可以省略
+### 3.6.语法格式六：
+
+当Lambda体只有一条语句时，return与大括号都可以省略
 
 ```java
 Comparator<Integer> com1 = new Comparator<Integer>() {
@@ -114,22 +126,22 @@ Comparator<Integer> com2 = (o1, o2) -> o1.compareTo(o2);
 
 作为接口（函数式接口）的实例
 
-## 总结：
+## [小结]：
 
 |            |                                                              |
 | ---------- | ------------------------------------------------------------ |
 | `->`左侧： | Lambda形参列表的参数类型可以省略,当参数列表只有一个参数时，可以省略() |
 | `->`右侧： | 当Lambda体只有一条执行语句（可能是return语句），可以省略{}和return关键字 |
 
-## 函数式接口
+## 5函数式接口
 
 Lambda表达式需要“函数式接口”的支持
 
-### 1.定义
+### 5.1.定义
 
 当一个接口**有且只有一个**抽象方法，则此接口称为“函数式接口”
 
-### 2.Runnable接口例子
+### 5.2.Runnable接口例子
 
 java源码中Runnable接口就是一个函数式接口，**有且只有一个**抽象方法。并且**函数式接口**都用`@FunctionalInterface`注解进行标注了，当一个接口打上`@FunctionalInterface`注解之后就声明为一个**函数式接口**，这个接口中就只能有一个抽象方法，大于一个抽象方法就会报错。
 
@@ -155,7 +167,7 @@ public interface Runnable {
 > 我们自己定义 函数式接口的时候，@Functionallnterface是可选的， 就算我不写这个注解，只要保证满足函数式接口定
 > 义的条件，也照样是函数式接口。但是,建议加上该注解
 
-### 3.自定义函数式接口
+### 5.3.自定义函数式接口
 
 ```java
 @FunctionalInterface
@@ -205,3 +217,23 @@ public class MyFunTest {
     }
 ```
 
+### 5.4.Java核心内置的函数式接口
+
+为了免去用户每次使用Lambda表达式时，都自行创建函数式接口，Java提供了4大核心内置 函数式接口
+
+| 函数式接口                | 参数类型 | 返回类型 | 用途                                                         |
+| ------------------------- | -------- | -------- | ------------------------------------------------------------ |
+| `Consumer<T>`消费型接口   | T        | void     | 对类型为T的对象应用操作，包含方法：`void accept(T t)`        |
+| `Supplier<T>`供给型接口   | 无       | T        | 返回类型为T的对象，包含方法：`T  get()`                      |
+| `Function<T,R>`函数型接口 | T        | R        | 对类型为T的对象应用操作，并返回结果。结果是R类型的对象。包含方法：`R apply(T t)` |
+| `Predicate<T>`断定型接口  | T        | boolean  | 确定类型为T的对象是否满足某约束，并返回boolean值。包含方法：`boolean test(T t)` |
+
+> 对于常见的泛型模式，推荐的泛型类型变量：
+>
+> -  E - Element (在集合中使用，因为集合中存放的是元素)
+> -  T - Type（Java 类）
+> -  K - Key（键）
+> -  V - Value（值）
+> -  N - Number（数值类型）
+> -  R - Result （返回结果，多用于函数式编程）
+> - ？ - 表示不确定的java类型
