@@ -380,5 +380,132 @@ public String strHandler(String str, Function<String, String> fun) {
 # 方法引用
 
 
+- 当要传递给Lambda体的操作，已经有实现的方法时，可以使用方法引用。
+
+- 方法引用可以看做是Lambda表达式深层次的表达。换句话说，方法引用就是Lambda表达式，也就是函数式接口的一个实例，通过方法的名字来指向一个方法，可以认为是Lambda表达式的一个语法糖。
+
+  > 语法糖（Syntactic sugar），也译为糖衣语法，是由英国计算机科学家彼得·约翰·兰达（Peter J. Landin）发明的一个术语，指计算机语言中添加的某种语法，这种语法对语言的功能并没有影响，但是更方便程序员使用。通常来说使用语法糖能够增加程序的可读性，从而减少程序代码出错的机会。
+
+- **要求**：实现接口的抽象方法的**参数列表**和**返回值类型**，必须与方法引用的方法参数列表和返回值类型保持一致。
+- 格式：使用操作符`::`将类（或对象）与方法名分隔开来。
+
+## 1、方法引用的使用场景
+
+当要传递给Lambda体的操作，已经有实现的方法时，可以使用方法引用。
+
+```java
+@Test
+public void test01() {
+    // 方法引用
+    Consumer<String> consumer02 = System.out::println;
+    consumer02.accept("Test");
+}
+```
+
+## 2、方法引用的分类
+
+| 类型         | 语法               | 对应的Lambda表达式                   |
+| ------------ | ------------------ | ------------------------------------ |
+| 静态方法引用 | 类名::staticMethod | (args) -> 类名.staticMethod(args)    |
+| 实例方法引用 | inst::instMethod   | (args) -> inst.instMethod(args)      |
+| 对象方法引用 | 类名::instMethod   | (inst,args) -> 类名.instMethod(args) |
+| 构建方法引用 | 类名::new          | (args) -> new 类名(args)             |
+
+## 3、方法引用举例
+
+### 3.1 对象 :: 非静态方法
+
+```java
+/**
+ * 情况一：
+ * 对象 :: 非静态方法
+ * Consumer中的 void accept(T t)
+ * PrintStream中的 public void println(String x) 
+ */
+@Test
+public void test01() {
+    // Lambda表达式
+    Consumer<String> consumer01 = str -> System.out.println(str);
+    consumer01.accept("Test");
+    // 方法引用
+    Consumer<String> consumer02 = System.out::println;
+    consumer02.accept("Test");
+}
+```
+
+```java
+/**
+ * Supplier 中的 T get()
+ * Employee 中的 public String getName()
+ */
+@Test
+public void test02() {
+    Employee emp = new Employee("Tom", 12, 1000);
+    // Lambda表达式
+    Supplier<String> supplier01 = () -> emp.getName();
+    System.out.println(supplier01.get());
+    // 方法引用
+    Supplier<String> supplier02= emp::getName;
+    System.out.println(supplier02.get());
+}
+```
+
+### 3.2 类 :: 静态方法
+
+```java
+/**
+ * 情况二：
+ * 类 :: 静态方法
+ * Comparator 中的 int compare(T o1, T o2)
+ * Integer 中的 public static int compare(int x, int y)
+ */
+@Test
+public void test03() {
+    // Lambda表达式
+    Comparator<Integer> comparator01 = (o1, o2) -> Integer.compare(o1, o2);
+    System.out.println(comparator01.compare(12, 21));
+    // 方法引用
+    Comparator<Integer> comparator02 = Integer::compareTo;
+    System.out.println(comparator02.compare(12, 21));
+}
+```
+
+```java
+/**
+ * Function 中的 R apply(T t)
+ * Math 中的 public static long round(double a)
+ */
+@Test
+public void test04() {
+    // Lambda表达式
+    Function<Double, Long> function01 = d -> Math.round(d);
+    System.out.println(function01.apply(12.3));
+    // 方法引用
+    Function<Double, Long> function02 =Math::round;
+    System.out.println(function02.appl(12.3));
+}
+```
+
+### 3.3 类 :: 非静态方法
+
+```java
+/**
+ * 情况三：
+ * 类 :: 非静态方法
+ * Comparator 中的 int compare(T o1, T o2)
+ * String 中的 public int compareTo(String anotherString)
+ */
+@Test
+public void test05() {
+    // Lambda表达式
+    Comparator<String> comparator01 = (s1, s2) -> s1.compareTo(s2);
+    System.out.println(comparator01.compare("abc", "abd"));
+    // 方法引用
+    Comparator<String> comparator02 = String::compareTo;
+    System.out.println(comparator02.compare("abc", "abd"));
+}
+```
+
+
 
 # Stream API
