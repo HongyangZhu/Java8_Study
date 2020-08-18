@@ -24,7 +24,7 @@ import java.util.function.Consumer;
  *
  */
 @SuppressWarnings("all")
-public class Lambda {
+public class LambdaTest01 {
 
     /**
      * 语法格式一：无参，无返回值
