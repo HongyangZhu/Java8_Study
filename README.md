@@ -15,18 +15,18 @@
 
 Lambda是一个匿名函数，可以把Lambda表达式理解为是一段可以传递的代码（将代码像数据一样进行传递）。可以写出更简洁、更灵活的代码。作为一种更紧凑的代码风格，使Java的语言表达能力得到了提升。
 
-## 1.举例：
+## 1、举例：
 
 `(o1, o2) -> Integer.compare(o1, o2)`
 
-## 2.格式：
+## 2、格式：
 
 | `->`     | 称为Lambda操作符 或 箭头操作符                     |
 | -------- | -------------------------------------------------- |
 | `->`左侧 | Lambda形参列表(其实就是接口中的抽象方法的形参列表) |
 | `->`右侧 | Lambda体(其实就是重写的抽象方法的方法体)           |
 
-## 3.Lambda表达式的使用：6种场合
+## 3、Lambda表达式的使用：6种场合
 
 ### 3.1.语法格式一：
 
@@ -122,7 +122,7 @@ System.out.println("语法格式六：当Lambda体只有一条语句时，return
 Comparator<Integer> com2 = (o1, o2) -> o1.compareTo(o2);
 ```
 
-## 4.Lambda本质：
+## 4、Lambda本质：
 
 作为接口（函数式接口）的实例
 
@@ -133,7 +133,7 @@ Comparator<Integer> com2 = (o1, o2) -> o1.compareTo(o2);
 | `->`左侧： | Lambda形参列表的参数类型可以省略,当参数列表只有一个参数时，可以省略() |
 | `->`右侧： | 当Lambda体只有一条执行语句（可能是return语句），可以省略{}和return关键字 |
 
-## 5函数式接口
+## 5、函数式接口
 
 Lambda表达式需要“函数式接口”的支持
 
@@ -610,3 +610,76 @@ public void test04() {
 ```
 
 # Stream API
+
+Java8的两个重大改变，一个是**Lambda表达式**，另一个就是**Stream API**（**java.util.stream**）。
+Stream 是Java8中**处理集合的关键抽象概念**，它可以对**集合**进行非常复杂的**查找**、**过滤**、**筛选**等操作。使用**Stream API**对集合数据操作，就类似于使用SQL执行的数据库查询。也可以使用**Stream API**来**并行**执行操作。
+
+## 1、概述
+
+### 1 .1 为什么需要Stream
+
+> Stream是Java8的一大亮点，是对容器对象功能的增强，它专注于对容器对象进行各种非常便利、高效的 **聚合操作（aggregate operation）**或者大批量数据操作。Stream API借助于同样新出现的Lambda表达式，极大的提高编程效率和程序可读性。同时，它提供串行和并行两种模式进行汇聚操作，并发模式能够充分利用多核处理器的优势，使用fork/join并行方式来拆分任务和加速处理过程。所以说，Java8中首次出现的 **java.util.stream是一个函数式语言+多核时代综合影响的产物。**
+
+### 1.2 什么是聚合操作
+
+在传统的J2EE应用中，Java代码经常不得不依赖于关系型数据库的聚合操作来完成诸如：
+
+- 客户每月平均消费金额
+- 最昂贵的在售商品
+- 本周完成的有效订单（排除了无效的）
+- 取十个数据样本作为首页推荐
+
+这类的操作。但在当今这个数据大爆炸的时代，在数据来源多样化、数据海量化的今天，很多时候不得不脱离 RDBMS，或者以底层返回的数据为基础进行更上层的数据统计。而Java的集合API中，仅仅有极少量的辅助型方法，更多的时候是程序员需要用Iterator来遍历集合，完成相关的聚合应用逻辑，这是一种远不够高效、笨拙的方法。在Java7中，如果要发现type为grocery的所有交易，然后返回以交易值降序排序好的交易ID集合，我们需要这样写：
+
+```java
+List<Transaction> groceryTransactions = new Arraylist<>();
+for(Transaction t: transactions){
+ if(t.getType() == Transaction.GROCERY){
+ groceryTransactions.add(t);
+ }
+}
+
+Collections.sort(groceryTransactions, new Comparator(){
+ public int compare(Transaction t1, Transaction t2){
+ return t2.getValue().compareTo(t1.getValue());
+ }
+});
+
+List<Integer> transactionIds = new ArrayList<>();
+for(Transaction t: groceryTransactions){
+ transactionsIds.add(t.getId());
+}
+```
+
+而在 Java 8 使用 Stream，代码更加简洁易读；而且使用并发模式，程序执行速度更快。
+
+```java
+List<Integer> transactionsIds = transactions.parallelStream()
+        .filter(t -> t.getType() == Transaction.GROCERY)
+        .sorted(comparing(Transaction::getValue).reversed())
+        .map(Transaction::getId).collect(toList());
+```
+
+Stream和Collections集合的区别：
+
+- Collections是一种静态的内存数据结构，主要面向内存，存储在内存中
+- Stream是有关计算的，主要面向CPU，通过CPU实现计算
+
+注意：
+
+- Stream自己不会存储元素
+- Stream不会改变源对象，相反会返回一个持有结果的新Stream
+- Stream操作是延迟执行的，这意味着会等到需要结果的时候才执行
+
+### 1.3 Stream的操作三步骤
+
+1. 创建Stream
+   一个数据源（如：集合、数组），获取一个流
+2. 中间操作
+   一个中间操作链，对数据源的数据进行处理
+3. 终止操作（终端操作）
+   一个终止操作，执行中间操作链，并产生结果
+
+
+
+# Optional类
