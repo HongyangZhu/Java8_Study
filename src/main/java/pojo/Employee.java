@@ -12,6 +12,19 @@ public class Employee {
         this.salary = salary;
     }
 
+    public Employee() {
+        System.out.println("Employee().....");
+    }
+
+    public Employee(String name) {
+        this.name = name;
+    }
+
+    public Employee(String name, int age) {
+        this.name = name;
+        this.age = age;
+    }
+
     public String getName() {
         return name;
     }
