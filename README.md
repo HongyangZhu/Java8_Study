@@ -379,6 +379,22 @@ public String strHandler(String str, Function<String, String> fun) {
 
 # 方法引用
 
+在学习lambda表达式之后，我们通常使用lambda表达式来创建匿名方法。然而，有时候我们仅仅是调用了一个已存在的方法。如下：
+
+```java
+Arrays.sort(stringsArray,(s1,s2)->s1.compareToIgnoreCase(s2));
+```
+
+ 在Java8中，我们可以直接通过方法引用来**简写**lambda表达式中已经存在的方法。
+
+```java
+Arrays.sort(stringsArray, String::compareToIgnoreCase);
+```
+
+这种特性就叫做方法引用(Method Reference)。 
+
+**方法引用**是用来直接访问**类**或者**实例**的**已经存在的方法或者构造方法**。方法引用提供了一种引用而不执行方法的方式，它需要由兼容的函数式接口构成的目标类型上下文。计算时，方法引用会创建函数式接口的一个实例。
+
 
 - 当要传递给Lambda体的操作，已经有实现的方法时，可以使用方法引用。
 
@@ -404,16 +420,21 @@ public void test01() {
 
 ## 2、方法引用的分类
 
-| 类型         | 语法               | 对应的Lambda表达式                   |
-| ------------ | ------------------ | ------------------------------------ |
-| 静态方法引用 | 类名::staticMethod | (args) -> 类名.staticMethod(args)    |
-| 实例方法引用 | inst::instMethod   | (args) -> inst.instMethod(args)      |
-| 对象方法引用 | 类名::instMethod   | (inst,args) -> 类名.instMethod(args) |
-| 构建方法引用 | 类名::new          | (args) -> new 类名(args)             |
+| 类型                             | 语法                            | 对应的Lambda表达式                        |
+| -------------------------------- | ------------------------------- | ----------------------------------------- |
+| 静态方法引用                     | ClassName :: staticMethodName   | (args) -> ClassName.staticMethod(args)    |
+| 某个对象的实例方法引用           | object :: instanceMethodName    | (args) -> inst.instMethod(args)           |
+| 某个类型的任意对象的实例方法引用 | ClassName :: instanceMethodName | (inst,args) -> ClassName.instMethod(args) |
+| 构建方法引用                     | ClassName :: new                | (args) -> new ClassName1(args)            |
 
 ## 3、方法引用举例
 
 ### 3.1 对象 :: 非静态方法
+
+ 特定对象的实例方法引用的语法格式为： `object :: instanceMethodName` ，如
+System.out::println 等价于lambda表达式 s -> System.out.println(s) 
+
+代码示例：
 
 ```java
 /**
@@ -452,6 +473,10 @@ public void test02() {
 
 ### 3.2 类 :: 静态方法
 
+**静态方法引用**,**组成语法格式：**`ClassName :: staticMethodName`
+
+代码示例：
+
 ```java
 /**
  * 情况二：
@@ -487,6 +512,8 @@ public void test04() {
 ```
 
 ### 3.3 类 :: 非静态方法
+
+代码示例：
 
 ```java
 /**
