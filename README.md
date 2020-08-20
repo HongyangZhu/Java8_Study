@@ -831,7 +831,7 @@ public void test01() {
 
 运行结果：
 
-![image-20200820192324878](https://github.com/HongyangZhu/Java8_Study/raw/master/assets/image_20200820192324878.png)
+![image-20200820192324878](assets/image_20200820192324878.png)
 
 ### 3 .2 映射
 
