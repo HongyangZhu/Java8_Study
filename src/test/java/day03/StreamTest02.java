@@ -4,6 +4,7 @@ import org.junit.Test;
 import pojo.Employee;
 import pojo.EmployeeData;
 
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -41,6 +42,31 @@ public class StreamTest02 {
         employeeList.stream().forEach(System.out::println);
         System.out.println("************去重之后***************");
         employeeList.stream().distinct().forEach(System.out::println);
+
+    }
+
+    /**
+     * 映射
+     */
+    @Test
+    public void test02() {
+        // map(Function f)
+        /* 接收一个函数作为参数，该函数会被应用到每个元素上，并将其映射成一个新的元素*/
+        List<String> list = Arrays.asList("aa", "bb", "cc", "dd");
+        System.out.println("Lambda 表达式：");
+        list.stream().map(s -> s.toUpperCase()).forEach(System.out::println);
+        System.out.println("方法引用：");
+        list.stream().map(String::toUpperCase).forEach(System.out::println);
+        System.out.println("*********************************");
+        // 练习：获取员工姓名长度大于3的员工姓名
+        List<Employee> employees = EmployeeData.getEmployees();
+        employees.stream()
+                .map(Employee::getName)
+                .filter(name -> name.length() > 3)
+                .forEach(System.out::println);
+
+        // flatMap(Function f)
+        /*接收一个函数作为参数，将流中的每个值都换成另一个流，然后把所有流连接成一个流*/
 
     }
 }
