@@ -765,8 +765,78 @@ public void test04() {
 }
 ```
 
+## 3、Stream 的中间操作
+
+多个**中间操作**可以连接起来形成一个**流水线**，除非流水线上触发终止操作，否则**中间操作不会执行任何的处理**！**而在终止操作时一次性处理，成为“惰性求值”。**
+
+### 3.1 筛选与切片
+
+| 方法                  | 描述                                                         |
+| --------------------- | ------------------------------------------------------------ |
+| `filter(Predicate p)` | 接受Lambda，从流中排除（筛选）某些元素                       |
+| `distinct()`          | 通过流所生成元素的`hashCode()`和`equals()`,去除重复元素      |
+| `limit(long maxSize)` | 截断流，使其元素不超过给定的数量（maxSize）                  |
+| `skip(long n)`        | 跳过元素，返回一个扔掉了前n个元素的流。若流中元素不足n个，则返回一个空流，与`limit(n)`互补 |
+
+测试数据：
+
+```java
+List<Employee> employeeList = new ArrayList<>();
+        employeeList.add(new Employee("欧阳雪", 18, 100));
+        employeeList.add(new Employee("Tom", 24, 200));
+        employeeList.add(new Employee("Harley", 22, 300));
+        employeeList.add(new Employee("向天笑", 20, 400));
+        employeeList.add(new Employee("李康", 22, 500));
+        employeeList.add(new Employee("小梅", 20, 600));
+        employeeList.add(new Employee("何雪", 21, 700));
+        employeeList.add(new Employee("李康", 22, 800));
+```
+
+代码示例：
+
+```java
+/**
+ * 筛选与切片
+ */
+@Test
+public void test01() {
+    List<Employee> employeeList = EmployeeData.getEmployees();
+    // filter(Predicate p)  接受Lambda，从流中排除（筛选）某些元素
+    // 工资大于500
+    employeeList.stream()
+            .filter(employee -> employee.getSalary() > 500)
+            .forEach(System.out::println);
+    System.out.println("*********************************");
+    // limit(long maxSize)  截断流，使其元素不超过给定的数量（maxSize）
+    employeeList.stream()
+            .limit(3)
+            .forEach(System.out::println);
+    System.out.println("*********************************");
+    // skip(long n) 跳过元素，返回一个扔掉了前n个元素的流。若流中元素不足n个，则返回一个空流，与limit(n)互补
+    employeeList.stream()
+            .skip(3)
+            .forEach(System.out::println);
+    System.out.println("*********************************");
+    // distinct() 通过流所生成元素的hashCode()和equals(),去除重复元素
+    Employee employee = new Employee("Test", 18, 100);
+    employeeList.add(employee);
+    employeeList.add(employee);
+    employeeList.add(employee);
+    System.out.println("************去重之前***************");
+    employeeList.stream().forEach(System.out::println);
+    System.out.println("************去重之后***************");
+    employeeList.stream().distinct().forEach(System.out::println);
+}
+```
+
+运行结果：
+
+![image-20200820192324878](assets/image-20200820192324878.png)
+
+### 3 .2 映射
 
 
 
+### 3 .3 排序
 
 # Optional类
