@@ -629,35 +629,27 @@ Stream 是Java8中**处理集合的关键抽象概念**，它可以对**集合**
 - 本周完成的有效订单（排除了无效的）
 - 取十个数据样本作为首页推荐
 
-这类的操作。但在当今这个数据大爆炸的时代，在数据来源多样化、数据海量化的今天，很多时候不得不脱离 RDBMS，或者以底层返回的数据为基础进行更上层的数据统计。而Java的集合API中，仅仅有极少量的辅助型方法，更多的时候是程序员需要用Iterator来遍历集合，完成相关的聚合应用逻辑，这是一种远不够高效、笨拙的方法。在Java7中，如果要发现type为grocery的所有交易，然后返回以交易值降序排序好的交易ID集合，我们需要这样写：
+这类的操作。但在当今这个数据大爆炸的时代，在数据来源多样化、数据海量化的今天，很多时候不得不脱离 RDBMS，或者以底层返回的数据为基础进行更上层的数据统计。而Java的集合API中，仅仅有极少量的辅助型方法，更多的时候是程序员需要用Iterator来遍历集合，完成相关的聚合应用逻辑，这是一种远不够高效、笨拙的方法。
+
+在Java7中，如果要找到年龄大于18岁的人并输出，我们需要这样写：
 
 ```java
-List<Transaction> groceryTransactions = new Arraylist<>();
-for(Transaction t: transactions){
- if(t.getType() == Transaction.GROCERY){
- groceryTransactions.add(t);
- }
+/*Java 7 的取值实现*/
+List<Employee> groceryTransactions = new ArrayList<>();
+for(Employee e: employeeList){
+    if(e.getAge() >18){
+        groceryTransactions.add(e);
+    }
 }
-
-Collections.sort(groceryTransactions, new Comparator(){
- public int compare(Transaction t1, Transaction t2){
- return t2.getValue().compareTo(t1.getValue());
- }
-});
-
-List<Integer> transactionIds = new ArrayList<>();
-for(Transaction t: groceryTransactions){
- transactionsIds.add(t.getId());
+for(Employee employee: groceryTransactions){
+    System.out.println(employee);
 }
 ```
 
 而在 Java 8 使用 Stream，代码更加简洁易读；而且使用并发模式，程序执行速度更快。
 
 ```java
-List<Integer> transactionsIds = transactions.parallelStream()
-        .filter(t -> t.getType() == Transaction.GROCERY)
-        .sorted(comparing(Transaction::getValue).reversed())
-        .map(Transaction::getId).collect(toList());
+employeeList.stream().filter(employee -> employee.getAge() > 18).forEach(System.out::println);
 ```
 
 Stream和Collections集合的区别：
@@ -680,6 +672,33 @@ Stream和Collections集合的区别：
 3. 终止操作（终端操作）
    一个终止操作，执行中间操作链，并产生结果
 
+代码示例：
 
+```java
+@Test
+public void test01() {
+    List<Employee> employeeList = new ArrayList<>();
+    employeeList.add(new Employee("欧阳雪", 18, 100));
+    employeeList.add(new Employee("Tom", 24, 200));
+    employeeList.add(new Employee("Harley", 22, 300));
+    employeeList.add(new Employee("向天笑", 20, 400));
+    employeeList.add(new Employee("李康", 22, 500));
+    employeeList.add(new Employee("小梅", 20, 600));
+    employeeList.add(new Employee("何雪", 21, 700));
+    employeeList.add(new Employee("李康", 22, 800));
+    // 1）找到年龄大于18岁的人并输出；
+    employeeList.stream().filter(employee -> employee.getAge() > 18).forEach(System.out::println);
+    System.out.println("-------------------------------------------");
+    // 2）找出所有薪资大于500的数量
+    long count = employeeList.stream().filter(employee -> employee.getSalary() > 500).count();
+    System.out.println(count);
+}
+```
+
+在这个例子中
+
+1. `employeeList.stream()`是创建流
+2. `filter()`属于中间操作
+3. `forEach()`、`count()`是终止操作
 
 # Optional类
