@@ -878,7 +878,25 @@ public void test01() {
 代码示例：
 
 ```java
-
+/**
+ * 排序
+ */
+@Test
+public void test03() {
+    // sorted()	产生一个新流，其中按自然顺序排序
+    List<String> list = Arrays.asList("ccc", "bbb", "aaa");
+    list.stream().sorted().forEach(System.out::println);
+    System.out.println("*********************************");
+    // sorted(Comparator comp)	产生一个新流，其中按比较器顺序排序
+    List<Employee> employees = EmployeeData.getEmployees();
+    employees.stream().sorted((e1, e2) -> {
+        if (e1.getAge() == e2.getAge()) {
+            return e1.getName().compareTo(e2.getName());
+        } else {
+            return Integer.compare(e1.getAge(), e2.getAge());
+        }
+    }).forEach(System.out::println);
+}
 ```
 
 
