@@ -4,8 +4,10 @@ import org.junit.Test;
 import pojo.Employee;
 import pojo.EmployeeData;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Stream;
 
 /**
  * 测试Stream的中间操作
@@ -67,7 +69,24 @@ public class StreamTest02 {
 
         // flatMap(Function f)
         /*接收一个函数作为参数，将流中的每个值都换成另一个流，然后把所有流连接成一个流*/
+        System.out.println("*********************************");
+        System.out.println("遍历List map写法");
+        list.stream().map(StreamTest02::fromStringToStream)
+                .forEach(s-> s.forEach(System.out::println));
+        System.out.println("*********************************");
+        System.out.println("遍历List flatMap写法");
+        list.stream().flatMap(StreamTest02::fromStringToStream)
+                .forEach(System.out::println);
 
+    }
+
+    // 将字符串中的多个字符构成的集合转换为对应的Stream的实例
+    public static Stream<Character> fromStringToStream(String str) {
+        ArrayList<Character> list = new ArrayList<>();
+        for (Character c : str.toCharArray()) {
+            list.add(c);
+        }
+        return list.stream();
     }
 
     /**
