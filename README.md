@@ -997,7 +997,30 @@ public void test01() {
 代码示例：
 
 ```java
-
+/**
+ * 归约
+ */
+@Test
+public void test02() {
+    // reduce(T iden,BinaryOperator b) 可以将流中元素反复结合起来，得到一个值。返回T
+    // 练习1：计算1-10的自然数之和
+    List<Integer> list = Arrays.asList(1, 2, 3, 4, 5, 6, 7, 8, 9, 10);
+    Integer reduce01 = list.stream().reduce(0, Integer::sum);
+    System.out.println(reduce01);
+    System.out.println("*********************************");
+    // reduce(BinaryOperator b) 可以将流中元素反复结合起来，得到一个值。返回Optional
+    // 练习2：计算公司所有员工工资的总和
+    List<Employee> employees = Arrays.asList(
+            new Employee("张三", 18, 9999.99),
+            new Employee("李四", 58, 5555.55),
+            new Employee("王五", 26, 3333.33),
+            new Employee("赵六", 36, 6666.66),
+            new Employee("田七", 12, 8888.88)
+    );
+    Optional<Double> reduce02 = employees.stream().map(Employee::getSalary).reduce(Double::sum);
+    System.out.println(reduce02);
+    System.out.println("*********************************");
+}
 ```
 
 
