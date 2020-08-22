@@ -3,10 +3,8 @@ package day03;
 import org.junit.Test;
 import pojo.Employee;
 
-import java.util.Arrays;
-import java.util.Comparator;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * 终止操作
@@ -90,5 +88,31 @@ public class StreamTest03 {
         Optional<Double> reduce02 = employees.stream().map(Employee::getSalary).reduce(Double::sum);
         System.out.println(reduce02);
         System.out.println("*********************************");
+    }
+
+    /**
+     * 收集
+     */
+    @Test
+    public void test03() {
+        // collect(Collector c) 将流转换为其他形式。接收一个Collector接口的实现，用于给Stream中元素做汇总的方法
+        // 练习1：查找工资大于6000的员工，结果返回为一个List或Set
+        List<Employee> employees = Arrays.asList(
+                new Employee("张三", 18, 9999.99),
+                new Employee("李四", 58, 5555.55),
+                new Employee("王五", 26, 3333.33),
+                new Employee("赵六", 36, 6666.66),
+                new Employee("田七", 12, 8888.88)
+        );
+        System.out.println("**********List**********");
+        List<Employee> employeeList = employees.stream()
+                .filter(employee -> employee.getSalary() > 6000)
+                .collect(Collectors.toList());
+        employeeList.forEach(System.out::println);
+        System.out.println("**********Set**********");
+        Set<Employee> employeeSet = employeeList.stream()
+                .filter(employee -> employee.getSalary() > 6000)
+                .collect(Collectors.toSet());
+        employeeSet.forEach(System.out::println);
     }
 }
