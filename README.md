@@ -11,11 +11,13 @@
 - 便于并行
 - 最大化减少空指针异常 Optional容器类
 
-
-
 ## 🔗[Lambda表达式](markdown/Lambda.md)
 
 Lambda是一个匿名函数，可以把Lambda表达式理解为是一段可以传递的代码（将代码像数据一样进行传递）。可以写出更简洁、更灵活的代码。作为一种更紧凑的代码风格，使Java的语言表达能力得到了提升。
+
+## 🔗[函数式接口](markdown/Functional.md)
+
+函数式接口(Functional Interface)就是一个有且仅有一个抽象方法，但是可以有多个非抽象方法的接口。
 
 ## 🔗[方法引用](markdown/MethodRef.md)
 
